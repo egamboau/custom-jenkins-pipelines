@@ -1,4 +1,6 @@
 FOLDERS = env.FOLDERS
+DESTINATION = env.DESTINATION
+SOURCE = env.SOURCE
 
 node {
     stage('Install dependencies') {
@@ -7,6 +9,8 @@ node {
     }
 
     for(String folder : FOLDERS.split(",")) {
-        echo folder
+        stage('Synch ${folder}') {
+           echo 'rsync -avn ${SOURCE}:${folder} ${DESTINATION}'
+    }
     }
 }
