@@ -1,0 +1,6 @@
+node {
+    stage('Install dependencies') {
+        echo 'Installing dependencies'
+        sh 'sudo apt -y install rsync'
+    }
+}
