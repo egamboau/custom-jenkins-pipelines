@@ -10,7 +10,7 @@ node {
 
     for(String folder : FOLDERS.split(",")) {
         stage("Synch ${folder}") {
-           echo "rsync -av ${SOURCE}:${folder} ${DESTINATION}"
+           sh "rsync -av ${SOURCE}:${folder} ${DESTINATION}"
     }
     }
 }
