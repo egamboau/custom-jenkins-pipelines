@@ -1,6 +1,12 @@
+FOLDERS = env.FOLDERS
+
 node {
     stage('Install dependencies') {
         echo 'Installing dependencies'
         sh 'sudo apt -y install rsync'
+    }
+
+    for(String folder : FOLDERS.split(",")) {
+        echo folder
     }
 }
