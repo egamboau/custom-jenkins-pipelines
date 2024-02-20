@@ -3,7 +3,7 @@ node {
         echo 'Downloading code from repository'
         git branch: 'main', credentialsId: 'e94f10d2-3df4-483b-8b0c-e12d5d024f27', url: 'https://github.com/egamboau/custom-jenkins-pipelines'
     }
-    withEnv(['ES_PORT=9200', 'KIBANA_PORT=5601']) {
+    withEnv(['ES_PORT=9200', 'KIBANA_PORT=5601', 'STACK_VERSION=8.12.1']) {
         stage('Execute docker compose on directory') {
             dir('ELK_metricbeat') {
                 sh 'docker compose down'
