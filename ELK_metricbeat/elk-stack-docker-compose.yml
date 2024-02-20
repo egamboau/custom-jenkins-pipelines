@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    networks:
+      - elastic
+    container_name: elasticsearch
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - ${ES_PORT}:9200
+    restart: always
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    networks:
+      - elastic
+    container_name: kibana
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+    ports:
+     - ${KIBANA_PORT}:5601
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
+    user: root
+    configs:
+      - source: mb_config
+        target: /usr/share/metricbeat/metricbeat.yml
+    labels:
+      - "co.elastic.metrics/module=system"
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/dbus/system_bus_socket:/hostfs/var/run/dbus/system_bus_socket:ro
+      - metricbeat:/usr/share/metricbeat/data
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - KIBANA_HOST=kibana
+      - DBUS_SYSTEM_BUS_ADDRESS=unix:path=/hostfs/var/run/dbus/system_bus_socket
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    deploy:
+      mode: global
+
+networks:
+  elastic:
+    external: true
+    name: host
+
+configs:
+  mb_config: 
+    file: metricbeat.docker.yml
+
+volumes:
+  metricbeat:
+  elasticsearch-data:
+  kibana-data:
