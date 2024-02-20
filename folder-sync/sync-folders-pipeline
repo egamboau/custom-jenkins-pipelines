@@ -11,6 +11,6 @@ node {
     for(String folder : FOLDERS.split(",")) {
         stage("Synch ${folder}") {
            sh "rsync -av ${SOURCE}:${folder} ${DESTINATION}"
-    }
+        }
     }
 }
