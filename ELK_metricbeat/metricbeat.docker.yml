@@ -9,9 +9,6 @@ metricbeat.autodiscover:
     - type: docker
       hints.enabled: true
 
-processors:
-  - add_cloud_metadata: ~
-
 output.elasticsearch:
   hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
   username: '${ELASTICSEARCH_USERNAME:}'
