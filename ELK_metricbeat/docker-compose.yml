@@ -14,7 +14,7 @@ services:
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1G
+    mem_limit: 2G
 
   kibana:
     depends_on:
