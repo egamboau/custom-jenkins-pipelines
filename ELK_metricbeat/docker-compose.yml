@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   elasticsearch:
+    restart: unless-stopped
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
@@ -16,6 +17,7 @@ services:
         hard: -1
 
   kibana:
+    restart: unless-stopped
     depends_on:
       - elasticsearch
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
@@ -28,6 +30,7 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
 
   metricbeat:
+    restart: unless-stopped
     image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
     user: root
     configs:
