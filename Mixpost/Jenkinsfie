@@ -1,0 +1,12 @@
+node {
+    stage('Get Code from git') {
+        echo 'Downloading code from repository'
+        git branch: 'main', credentialsId: 'e94f10d2-3df4-483b-8b0c-e12d5d024f27', url: 'https://github.com/egamboau/custom-jenkins-pipelines'
+    }
+    stage('Execute docker compose on directory') {
+        dir('Mixpost') {
+            sh 'docker compose down'
+            sh 'docker compose up -d'
+        }
+    }
+}
