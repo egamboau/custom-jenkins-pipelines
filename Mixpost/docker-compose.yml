@@ -7,9 +7,9 @@ services:
             APP_NAME: 'Mixpost'
             APP_KEY: example_secret_key # Generate a base64 secret with this tool: https://mixpost.app/encryption-key-generator
             APP_URL: https://example.com
-            DB_DATABASE: '${DB_NAME}'
-            DB_USERNAME: '${DB_USER}'
-            DB_PASSWORD: '${DB_PASSWORD}'
+            DB_DATABASE: '${DB_DATABASE_MIXPOST}'
+            DB_USERNAME: '${DB_USER_MIXPOST}'
+            DB_PASSWORD: '${DB_PASSWORD_MIXPOST}'
         ports:
             - 9000:80
         volumes:
@@ -24,13 +24,13 @@ services:
         ports:
             - '3306:3306'
         environment:
-            MYSQL_DATABASE: '${DB_NAME}'
-            MYSQL_USER: '${DB_USER}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_DATABASE: '${DB_DATABASE_MIXPOST}'
+            MYSQL_USER: '${DB_USER_MIXPOST}'
+            MYSQL_PASSWORD: '${DB_PASSWORD_MIXPOST}'
         volumes:
             - 'mixpost-mysql:/var/lib/mysql'
         healthcheck:
-            test: ["CMD", "mysqladmin", "ping", "-p ${DB_PASSWORD}"]
+            test: ["CMD", "mysqladmin", "ping", "-p ${DB_PASSWORD_MIXPOST}"]
             retries: 3
             timeout: 5s
         restart: unless-stopped
