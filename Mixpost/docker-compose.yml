@@ -5,7 +5,7 @@ services:
         image: inovector/mixpost:latest
         environment:
             APP_NAME: 'Mixpost'
-            APP_KEY: example_secret_key # Generate a base64 secret with this tool: https://mixpost.app/encryption-key-generator
+            APP_KEY: ${MIXPOST_SECRET_KEY} # Generate a base64 secret with this tool: https://mixpost.app/encryption-key-generator
             APP_URL: https://example.com
             DB_DATABASE: '${DB_DATABASE_MIXPOST}'
             DB_USERNAME: '${DB_USER_MIXPOST}'
