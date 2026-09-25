@@ -3,9 +3,19 @@ DESTINATION = env.DESTINATION
 SOURCE = env.SOURCE
 
 node('rsync') {
-    for(String folder : FOLDERS.split(",")) {
-        stage("Synch ${folder}") {
-           sh "rsync -av ${SOURCE}:${folder} ${DESTINATION}"
+    sshagent(credentials: ['apoc-ssh-key']) {
+
+        withCredentials([
+            file(
+                credentialsId: 'apoc-known-hosts',
+                variable: 'KNOWN_HOSTS'
+            )
+        ]) {
+            for(String folder : FOLDERS.split(",")) {
+                stage("Rsync ${folder}") {
+                    sh """rsync -av -e "ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=\$KNOWN_HOSTS" ${SOURCE}:${folder} ${DESTINATION}"""
+                }
+            }
         }
     }
 }
